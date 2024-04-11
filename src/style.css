@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a {
+  text-decoration: none;
+  color: #0a0e11   ;
+  /* color: hsla(160, 100%, 37%, 1); */
+  /* transition: 0.4s; */
+  padding: 3px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+@media (hover: hover) {
+    a:hover {
+      /* color:#e07f0a ; */
+      background-color: hsla(202, 86%, 38%, 0.2);
+    }
+  }
