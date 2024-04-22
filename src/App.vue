@@ -9,12 +9,11 @@ import NavBar from './components/NavBar.vue'
 <template>
   <div>
     <NavBar />
- 
 
     <RouterView />
   </div>
 </template>
-   <!-- <nav v-show="authStore.user" class="navbar navbar-expand navbar-dark bg-dark">
+<!-- <nav v-show="authStore.user" class="navbar navbar-expand navbar-dark bg-dark">
     <div class="navbar-nav">
       <RouterLink to="/" class="nav-item nav-link">Home</RouterLink>
       <a @click="authStore.logout()" class="nav-item nav-link">Logout</a>
