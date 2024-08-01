@@ -1,4 +1,4 @@
-export type vehicle = {
+export type IVehicle = {
   _id?: Int32Array
   placas: string
   descripcion: string

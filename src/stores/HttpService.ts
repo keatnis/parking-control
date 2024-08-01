@@ -1,11 +1,12 @@
 const RUTA_SERVIDOR = 'http://localhost:5000'
+
 const manejarRespuesta = async (respuesta: Response) => {
-  const respuestaDecodificada = await respuesta.json()
-  if (respuestaDecodificada.error) {
+  const respuestaDecodificada = await respuesta.json();
+  if (respuestaDecodificada.error  ) {
     throw new Error(JSON.stringify(respuestaDecodificada.error))
   }
 
-  return respuestaDecodificada.data
+  return respuestaDecodificada.data;
 }
 const HttpService = {
   post: async (ruta: string, datos: any) => {
