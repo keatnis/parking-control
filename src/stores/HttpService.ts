@@ -1,6 +1,6 @@
 const RUTA_SERVIDOR = 'http://localhost:5000'
 
-const manejarRespuesta = async (respuesta: Response) => {
+const manejarRespuesta = async (respuesta : any) => {
   const respuestaDecodificada = await respuesta.json();
   if (respuestaDecodificada.error  ) {
     throw new Error(JSON.stringify(respuestaDecodificada.error))
@@ -9,7 +9,7 @@ const manejarRespuesta = async (respuesta: Response) => {
   return respuestaDecodificada.data;
 }
 const HttpService = {
-  post: async (ruta: string, datos: any) => {
+  post: async (ruta: string, datos: any ) => {
     const respuestaRaw = await fetch(RUTA_SERVIDOR + ruta, {
       method: 'POST',
       headers: {

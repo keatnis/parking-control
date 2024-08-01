@@ -18,7 +18,7 @@ const CalcularTiempo = {
 
         return costo;
     },
-    tiempoEntreFechas (inicio) {
+    tiempoEntreFechas (inicio : string) {
         return new Date().getTime() - new Date(inicio).getTime();
     },
     tiempoTranscurridoPreciso (diferenciaEnMilisegundos) {

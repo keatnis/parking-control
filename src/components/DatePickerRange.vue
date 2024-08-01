@@ -1,22 +1,12 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { formatDate } from '@vueuse/core'
+import { ref } from 'vue'
 
-// import DateRangePicker from 'flowbite-datepicker/DateRangePicker'
 
-defineProps({
-  start: Date,
-  end: Date
-})
+// const format = formatDate(new Date(), 'YYYY-MM-D');
+const fechaInicio = ref(new Date());
+const fechaFinal = ref(new Date());
 
-onMounted(() => {
-  // const datepickerEl = document.getElementById('dateRangePicker')
-  // new DateRangePicker(datepickerEl, {
-  //   format: 'yyyy-mm-dd',
-  //   config: {
-  //     autohide: true
-  //   }
-  // })
-})
 </script>
 
 <template>
@@ -41,8 +31,10 @@ onMounted(() => {
         type="date"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         placeholder="Select date start"
-        v-model="$props.start"
+        :v-model="fechaInicio"
+        value="fechaInicio"
       />
+
     </div>
     <span class="mx-4 text-gray-500">hasta</span>
     <div class="relative">
@@ -60,12 +52,16 @@ onMounted(() => {
         </svg>
       </div>
       <input
-        v-model="$props.start"
         name="end"
         type="date"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         placeholder="Select date end"
+        value="fechaFinal"
+        v-model="fechaFinal"
       />
     </div>
+    {{fechaInicio}}
+    <p>fecha final</p>
+    {{fechaFinal}}
   </div>
 </template>

@@ -5,8 +5,60 @@
       <div class="flex items-center">
         <div class="relative">
           <span class="px-4 text-gray-800">Seleccione el rango de fecha </span>
-          <DatePickerRange :="dates" />
-          {{ dates }}
+<!--          <DatePickerRange  />-->
+          <div class="flex items-center py-5" id="dateRangePicker">
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg
+                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                  <path
+                      d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                  />
+                </svg>
+              </div>
+              <input
+                  name="start"
+                  type="date"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Select date start"
+                  v-model="fechaInicio"
+                  @input="actualizar()"
+              />
+
+            </div>
+            <span class="mx-4 text-gray-500">hasta</span>
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg
+                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                  <path
+                      d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                  />
+                </svg>
+              </div>
+              <input
+                  name="end"
+                  type="date"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Select date end"
+                  v-model="fechaFin"
+                  @input="actualizar()"
+              />
+
+            </div>
+
+          </div>
+
         </div>
       </div>
       <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
@@ -131,13 +183,14 @@
                 class="border-b dark:border-gray-700"
                 v-for="(item, index) in listVehicle"
                 :key="index"
+
               >
                 <td class="px-4 py-3">{{ item.placas }}</td>
                 <td class="px-4 py-3">{{ item.descripcion }}</td>
                 <td class="px-4 py-3">{{ item.propietario }}</td>
-                <td class="px-4 py-3">{{ item.fechaEntrada }}</td>
+                <td class="px-4 py-3" >{{ formatDate(new Date(item.fechaEntrada), 'D MMMM, hh:mm')}}</td>
                 <td class="px-4 py-3">
-                  <CobrarView :vehiculo="item" />
+                  <CobrarModel :vehiculo="item"  />
                 </td>
 
                 <td class="px-4 py-3">
@@ -264,60 +317,41 @@
 import { defineComponent } from 'vue'
 import { mapState, mapActions } from 'pinia'
 import { useVehicleStore } from '../stores/vehicle.store'
-
-import Utils from '../utils/Utiles.js'
-import { initFlowbite, initModals } from 'flowbite'
-import CobrarView from './CobrarView.vue'
-import { ref } from 'vue'
+import CobrarModel from './CobrarModal.vue'
 import { RouterLink } from 'vue-router'
-import DatePickerRange from '@/components/DatePickerRange.vue'
+import { formatDate } from '@vueuse/core'
+
+
 
 export default defineComponent({
-  components: { CobrarView, DatePickerRange },
-
+  components: {  CobrarModel },
+  data: () => ({
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
+    vehiculos: []
+  }),
   setup() {
-    //funciones para modal
-    const modalActive = ref(false)
-
-    function toggleModal() {
-      modalActive.value = !modalActive.value
-    }
-    function closeModal() {
-      modalActive.value = false
-    }
-
-    const dates = {
-      start: new Date(),
-      end: new Date()
-    }
-    const fechaInicio = Utils.formatearFechaAInicioDeDia(dates.start, 'T')
-    const fechaFin = Utils.formatearFechaAFinDeDia(dates.end, 'T')
-
     return {
-      modalActive,
-      toggleModal,
-      closeModal,
       RouterLink,
-      dates,
-      fechaInicio,
-      fechaFin
+
     }
   },
   methods: {
-    ...mapActions(useVehicleStore, ['getAllVehiculos'])
+    formatDate,
+    ...mapActions(useVehicleStore, ['getAllVehiculos']),
+   async actualizar() {
+      const fechaInicio = formatDate(new Date(this.fechaInicio), 'YYYY-MM-DDT00:00');
+      console.log(this.fechaInicio)
+     await this.getAllVehiculos(fechaInicio ,
+         formatDate(new Date(this.fechaFin), 'YYYY-MM-DDT24:00'));
+    },
   },
   computed: {
     ...mapState(useVehicleStore, ['listVehicle'])
-
-    // filteredItems () {
-    //   return this.listVehicle.filter(item)
-    //   })
   },
   mounted() {
-    initFlowbite()
-    initModals()
+      this.fechaInicio = new Date();
+  },
 
-    this.getAllVehiculos(this.fechaInicio, this.fechaFin)
-  }
 })
 </script>

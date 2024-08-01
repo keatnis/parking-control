@@ -1,14 +1,6 @@
 import { defineStore } from 'pinia'
 import HttpService from './HttpService'
-
-export interface IVehicle {
-  _id?: Int32Array
-  placas: string
-  descripcion: string
-  propietario: string
-  fechaEntrada: Date
-  fechaSalida?: Date
-}
+import { IVehicle } from './types/vehicle_type'
 
 interface IState {
   vehicleCurrent: IVehicle
@@ -32,6 +24,7 @@ export const useVehicleStore = defineStore('vehicleStore', {
       const re = await HttpService.post('/addVehiculo', vehicle)
 
       if (re) {
+
         alert('registrado')
         this.vehicleCurrent = {
           placas: '',
@@ -48,7 +41,7 @@ export const useVehicleStore = defineStore('vehicleStore', {
       const data = await HttpService.get(
         `/vehiculos?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
       )
-      this.listVehicle = data
+      this.listVehicle = data;
     },
 
     async updateTask(vehicle: IVehicle) {

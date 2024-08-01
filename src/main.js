@@ -1,16 +1,21 @@
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import './style.css'
-import App from './App.vue';
-import { router } from './helpers';
-
+import App from './App.vue'
+import { router } from './helpers'
+import moment from 'moment'
 // setup fake backend
-import { fakeBackend } from './helpers';
-fakeBackend();
+import { fakeBackend } from './helpers'
+fakeBackend()
 
-const app = createApp(App);
+const app = createApp(App)
 
-app.use(createPinia());
-app.use(router);
+app.use(createPinia())
+app.use(router)
 
-app.mount('#app');
+app.mount('#app')
+app.filter('formatDate', function (value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+})
